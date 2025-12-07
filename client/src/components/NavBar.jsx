@@ -15,7 +15,7 @@ const Navbar = () => {
   const toggleMenu = () => setIsOpen(!isOpen);
 
   return (
-    <nav className="bg-white border-b border-gray-200 shadow-md sticky top-0 z-40">
+    <nav className="bg-white border-b border-gray-200 shadow-md sticky top-0 z-100">
       {/* FULL WIDTH CONTAINER (NO CENTERING) */}
       <div className="px-4 sm:px-6 lg:px-8 w-full">
         <div className="flex justify-between items-center h-16 w-full">
