@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 import { LandingPage } from "./pages/LandingPage";
 import LoginPage from "./pages/LoginPage";
+import CanvasPage from "./pages/CanvasPage";
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
