@@ -116,7 +116,7 @@ export default function TutorialsSection() {
           <motion.button
             whileHover={{ scale: 1.08 }}
             whileTap={{ scale: 0.95 }}
-            className="bg-red-500 text-white px-8 py-3 rounded-full shadow-md hover:bg-red-600 transition"
+            className="bg-red-700 w-full  h-15 text-white px-8 py-3 rounded-full shadow-md hover:bg-red-600 transition"
           >
             Get Started Free
           </motion.button>

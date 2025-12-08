@@ -7,6 +7,7 @@ import TutorialsSection from "../components/LandingPage/TutorialsSection";
 import KolamAnalysis from "../components/LandingPage/KolamAnalysis";
 import CreateKolamSection from "../components/LandingPage/CreateKolamSection";
 import CircularGallery from "../components/LandingPage/CircularGallery";
+import MissionSection from "../components/LandingPage/MissionSection";
 
 export const LandingPage = () => {
   return (
@@ -21,6 +22,7 @@ export const LandingPage = () => {
           scrollEase={0.02}
         />
       </div>
+      <MissionSection/> 
       <TutorialsSection />
       <KolamAnalysis />
       <CreateKolamSection />

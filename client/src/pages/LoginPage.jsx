@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
-// import BASE_URL from "../../assets/assests";
-import { loginUser } from "../api/auth";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -22,23 +20,39 @@ const LoginPage = () => {
     setError("");
 
     try {
-        const data = await loginUser(email, password);
+      const response = await axios.post(
+        "http://localhost:5000/api/auth/login",
+        {
+          email,
+          password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
-        localStorage.setItem("token", data.token);
-        navigate(from, { replace: true });
+      const { token } = response.data;
 
+      // ✅ Save JWT
+      localStorage.setItem("token", token);
+
+      // ✅ Redirect
+      navigate(from, { replace: true });
     } catch (err) {
-        const message = err.response?.data?.message || "Login failed";
-        setError(message);
+      const message =
+        err.response?.data?.message || "Login failed. Please try again.";
+      setError(message);
     } finally {
-        setLoading(false);
+      setLoading(false);
     }
-    };
+  };
 
   return (
     <div className="min-h-screen flex">
 
-      {/* LEFT — Kolam Branding */}
+      {/* LEFT SECTION */}
       <div className="hidden md:flex flex-1 flex-col justify-center items-center bg-rose-50 px-10">
         <div className="max-w-md text-center">
           <div className="bg-rose-600 p-4 rounded-xl mb-6 shadow-md">
@@ -50,26 +64,24 @@ const LoginPage = () => {
           </h1>
 
           <h2 className="text-lg font-semibold text-gray-800 mb-4">
-            Discover • Learn • Create Kolam Art  
+            Discover • Learn • Create Kolam Art
           </h2>
 
           <p className="text-gray-700 leading-relaxed">
-            Chitrakolam brings the timeless beauty of kolam art to the digital world.
-            Explore traditional patterns, discover mathematical elegance, and create
-            your own masterpieces with our modern interactive tools.
+            Bring the timeless beauty of kolam art into the digital world.
+            Explore patterns, math, and creativity with modern tools.
           </p>
 
           <p className="mt-6 text-gray-600 text-sm italic">
-            “Join thousands of artists keeping this beautiful tradition alive.”  
+            “Join thousands of artists keeping tradition alive.”
           </p>
         </div>
       </div>
 
-      {/* RIGHT — Login Card */}
+      {/* RIGHT SECTION */}
       <div className="flex flex-1 justify-center items-center px-6 py-12 bg-white">
         <div className="w-full max-w-md bg-rose-50 rounded-xl shadow-lg p-6">
 
-          {/* Title */}
           <h2 className="text-2xl font-semibold text-gray-900 text-center mb-2">
             Welcome Back
           </h2>
@@ -78,17 +90,16 @@ const LoginPage = () => {
             Log in to continue your creative journey
           </p>
 
-          {/* Error */}
+          {/* ERROR */}
           {error && (
             <div className="bg-red-100 text-red-600 text-sm p-2 rounded mb-4">
               {error}
             </div>
           )}
 
-          {/* Form */}
           <form className="space-y-5" onSubmit={handleSubmit}>
 
-            {/* Email */}
+            {/* EMAIL */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Email Address
@@ -99,14 +110,14 @@ const LoginPage = () => {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="you@example.com"
                   required
+                  placeholder="you@example.com"
                   className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500"
                 />
               </div>
             </div>
 
-            {/* Password */}
+            {/* PASSWORD */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Password
@@ -117,8 +128,8 @@ const LoginPage = () => {
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Enter your password"
                   required
+                  placeholder="Enter your password"
                   className="w-full pl-10 pr-10 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500"
                 />
                 <button
@@ -131,7 +142,7 @@ const LoginPage = () => {
               </div>
             </div>
 
-            {/* Submit Button */}
+            {/* SUBMIT */}
             <button
               type="submit"
               disabled={loading}
@@ -141,10 +152,13 @@ const LoginPage = () => {
             </button>
           </form>
 
-          {/* Footer */}
+          {/* FOOTER */}
           <p className="text-center text-sm text-gray-600 mt-6">
             New to Chitrakolam?{" "}
-            <a href="/register" className="text-rose-700 font-medium hover:underline">
+            <a
+              href="/register"
+              className="text-rose-700 font-medium hover:underline"
+            >
               Create an account
             </a>
           </p>

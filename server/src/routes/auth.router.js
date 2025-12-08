@@ -1,6 +1,5 @@
 import express from "express";
 import {register, login} from "../controllers/auth.controller.js";
-import jwt from "jsonwebtoken";
 const auth_router = express.Router();
 
 auth_router.route('/register').post(register);
@@ -17,6 +16,4 @@ auth_router.get("/validate-token", (req, res) => {
     res.status(403).json({ valid: false });
   }
 });
-
-
 export default auth_router;

@@ -1,15 +1,15 @@
 import { Camera, Mesh, Plane, Program, Renderer, Texture, Transform } from 'ogl';
 import { useEffect, useRef } from 'react';
-import img1 from "../../assets/img1.jpeg";
-import img2 from "../../assets/img2.jpeg";
-import img3 from "../../assets/img3.jpeg";
-import img4 from "../../assets/img4.jpeg";
-import img5 from "../../assets/img5.jpeg";
-import img6 from "../../assets/img6.jpeg";
-import img7 from "../../assets/img7.jpeg";
-import img8 from "../../assets/img8.jpeg";
-import img9 from "../../assets/img9.jpeg";
-import img10 from "../../assets/img10.jpeg";
+import img1 from "../../assets/1.jpg";
+import img2 from "../../assets/2.jpg";
+import img3 from "../../assets/3.jpg";
+import img4 from "../../assets/4.jpg";
+import img5 from "../../assets/5.jpg";
+import img6 from "../../assets/6.jpg";
+// import img7 from "../../assets/img7.jpeg";
+// import img8 from "../../assets/img8.jpeg";
+// import img9 from "../../assets/img9.jpeg";
+// import img10 from "../../assets/img10.jpeg";
 
 function debounce(func, wait) {
   let timeout;
@@ -342,18 +342,12 @@ class App {
   }
   createMedias(items, bend = 1, textColor, borderRadius, font) {
     const defaultItems = [
-      { image: img1, text: 'Kolam' },
-      { image: img2, text: 'Chitra' },
-      { image: img3, text: 'Waterfall' },
-      { image: img4, text: 'Strawberries' },
-      { image: img5, text: 'Deep Diving' },
-      { image: img6, text: 'Train Track' },
-      { image: img7, text: 'Santorini' },
-      { image: img8, text: 'Blurry Lights' },
-      { image: img9, text: 'New York' },
-      { image: img10, text: 'Good Boy' },
-      { image: img1, text: 'Coastline' },
-      { image: img2, text: 'Palm Trees' }
+      { image: img1, text: 'Explore' , textColor: '#D32F2F'},
+      { image: img2, text: 'Generate' , textColor: '#D32F2F' },
+      { image: img3, text: 'Canvas' , textColor: '#D32F2F' },
+      { image: img4, text: 'Learn & Fun' , textColor: '#D32F2F' },
+      { image: img5, text: 'Analyser' , textColor: '#D32F2F' },
+      { image: img6, text: 'Community' , textColor: '#D32F2F' },
     ];
     const galleryItems = items && items.length ? items : defaultItems;
     this.mediasImages = galleryItems.concat(galleryItems);
@@ -370,7 +364,7 @@ class App {
         text: data.text,
         viewport: this.viewport,
         bend,
-        textColor,
+        textColor: data.textColor || textColor,
         borderRadius,
         font
       });
