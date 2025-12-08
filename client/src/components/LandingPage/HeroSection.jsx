@@ -62,18 +62,18 @@ export default function KolamHeroSection() {
                     key={globalIndex}
                     className="w-full aspect-square rounded-3xl overflow-hidden shadow-lg bg-white"
                     animate={{
-                      y: [0, -25, 0, 25, 0],
-                      rotate: [-1.5, 1.5, -1.5],
-                      scale: [1, 1.03, 1],
+                      y: [0, -8, 0, 8, 0], // ↓ very subtle vertical motion
+                      rotate: [-0.5, 0.5, -0.5], // ↓ very subtle rotation
+                      scale: [1, 1.01, 1], // ↓ minimal scale change
                     }}
                     transition={{
-                      duration: 4,
+                      duration: 6, // ↓ slower, smoother movement
                       repeat: Infinity,
                       ease: "easeInOut",
-                      delay: globalIndex * 0.15,
+                      delay: globalIndex * 0.15, // ↓ stagger is now visible and calm
                     }}
                     whileHover={{
-                      scale: 1.08,
+                      scale: 1.05,
                       rotate: 0,
                     }}
                   >
