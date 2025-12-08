@@ -11,6 +11,7 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import CanvasPage from "./pages/CanvasPage";
 import PrivateRoute from "./components/PrivateRoute";
+import AnalysePage from "./pages/AnalysePage" 
 
 function App() {
   const router = createBrowserRouter(
@@ -22,6 +23,7 @@ function App() {
         <Route path="login" element={<LoginPage />} />
         <Route path="register" element={<RegisterPage />} />
         <Route path="canvas" element={<PrivateRoute><CanvasPage /></PrivateRoute>} />
+        <Route path="analyse" element={<PrivateRoute><AnalysePage /></PrivateRoute>} />
       </Route>
     )
   );

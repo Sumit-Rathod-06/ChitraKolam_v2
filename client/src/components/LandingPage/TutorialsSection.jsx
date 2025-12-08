@@ -20,7 +20,7 @@ export default function TutorialsSection() {
           <div className="absolute -top-3 w-4 h-4 bg-gray-800 rounded-full z-50"></div>
 
           {/* Hanging String */}
-          <div className="absolute -top-1 w-[2px] h-10 bg-gray-700 z-40"></div>
+          <div className="absolute -top-1 w-0.5 h-10 bg-gray-700 z-40"></div>
 
           {/* Swinging Frame */}
           <motion.div
