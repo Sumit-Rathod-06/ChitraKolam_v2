@@ -1,5 +1,7 @@
 import React from "react";
 import canvas from "../../assets/canvas.png"
+import kolamGif from "../../assets/kolam.gif";
+
 export default function CreateKolamSection() {
   return (
     <div className="min-h-screen bg-white px-6 py-20 flex items-center justify-center">
@@ -7,23 +9,50 @@ export default function CreateKolamSection() {
 
         {/* LEFT SIDE – EDITOR MOCKUP */}
         <div className="bg-white rounded-3xl shadow-[0_10px_50px_rgba(0,0,0,0.15)] overflow-hidden">
-          
-          {/* Top Bar */}
-          
+            
+            {/* 1. Top Bar - This needs to be a separate element to match the design */}
+            <div className="flex items-center justify-between p-4 border-b border-gray-100">
+                {/* Placeholder for Drawing Tools, Zoom, Export, etc. */}
+                <p className="text-sm font-medium text-gray-700">Drawing Tools</p>
+                <div className="flex items-center space-x-2">
+                    <button className="text-sm text-gray-500 hover:text-gray-700">Export</button>
+                    <button className="bg-[#C53030] text-white px-3 py-1 rounded text-xs">AI Completion</button>
+                </div>
+            </div>
+            
+            <div className="relative flex">
+                {/* 2. Side/Floating Tools - This needs to be a separate element */}
+                {/* Use the actual 'canvas.png' for the background/tools if available, 
+                  or just keep it simple as in the image */}
+                <div className="w-1/4 p-4 border-r border-gray-100 bg-gray-50">
+                    {/* Tools content placeholder */}
+                    <p className="text-xs text-gray-500">Brush Size</p>
+                    <input type="range" className="w-full h-1" />
+                    <p className="text-xs text-gray-500 mt-4">Grid Pattern</p>
+                    <div className="flex space-x-1 mt-1">
+                        <button className="border rounded px-2 py-1">⬜</button>
+                        <button className="border rounded px-2 py-1">⚫</button>
+                    </div>
+                </div>
 
-          {/* Image / Canvas */}
-          <div className="relative">
-            <img
-              src={canvas}
-              alt="Kolam Editor"
-              className="w-full object-cover"
-            />
+                {/* 3. Image / Canvas - This is where the GIF should go */}
+                {/* Set a fixed or explicit height for the main content area for consistency, 
+                  and use object-contain on the image if you want the whole GIF visible without cropping. */}
+                <div className="relative flex-grow flex items-center justify-center bg-white" style={{ minHeight: '400px' }}>
+                    <img
+                        src={kolamGif}
+                        alt="Kolam Editor"
+                        // The key fix: use object-contain to ensure the entire image is visible,
+                        // and w-full h-full to fill the parent container.
+                        className="w-full h-full object-contain p-4" 
+                    />
+                </div>
+            </div>
 
-            {/* Floating Tools */}
-            <div className="my-1 px-6 py-3 text-gray-400 text-sm text-center">
+            {/* 4. Floating Tools / Footer text */}
+            <div className="my-1 px-6 py-3 text-gray-400 text-sm text-center border-t border-gray-100">
                 Designing with precision • AI Canvas Tools
             </div>
-          </div>
 
         </div>
 
