@@ -38,46 +38,11 @@ const CopyrightDesignCard = ({ design, onImageClick }) => {
         <img
           src={design.image}
           alt={design.title}
-          className="w-full h-full object-cover blur-[2px]"
+          className="w-full h-full object-cover"
           draggable="false"
           onDragStart={(e) => e.preventDefault()}
         />
         {getStatusBadge(design.status)}
-        {/* Diagonal Watermark Overlay */}
-        <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
-          <div 
-            className="text-white/40 font-bold text-2xl tracking-widest whitespace-nowrap select-none"
-            style={{ 
-              transform: 'rotate(-35deg)',
-              textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
-            }}
-          >
-            CHITRAKOLAM
-          </div>
-        </div>
-        {/* Multiple diagonal watermarks for better coverage */}
-        <div className="absolute inset-0 flex items-start justify-center pt-16 overflow-hidden">
-          <div 
-            className="text-white/30 font-bold text-lg tracking-widest whitespace-nowrap select-none"
-            style={{ 
-              transform: 'rotate(-35deg)',
-              textShadow: '1px 1px 2px rgba(0,0,0,0.2)'
-            }}
-          >
-            CHITRAKOLAM
-          </div>
-        </div>
-        <div className="absolute inset-0 flex items-end justify-center pb-16 overflow-hidden">
-          <div 
-            className="text-white/30 font-bold text-lg tracking-widest whitespace-nowrap select-none"
-            style={{ 
-              transform: 'rotate(-35deg)',
-              textShadow: '1px 1px 2px rgba(0,0,0,0.2)'
-            }}
-          >
-            CHITRAKOLAM
-          </div>
-        </div>
       </div>
 
       {/* Card Content */}

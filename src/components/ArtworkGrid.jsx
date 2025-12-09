@@ -12,11 +12,14 @@ const ArtworkGrid = ({ artworks }) => {
             key={art.id}
             className="aspect-square rounded-xl overflow-hidden bg-gray-100 hover:shadow-lg transition-all duration-300 cursor-pointer group"
             onClick={() => setSelectedImage(art)}
+            onContextMenu={(e) => e.preventDefault()}
           >
             <img
               src={art.img}
               alt={art.title}
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              draggable="false"
+              onDragStart={(e) => e.preventDefault()}
             />
           </div>
         ))}

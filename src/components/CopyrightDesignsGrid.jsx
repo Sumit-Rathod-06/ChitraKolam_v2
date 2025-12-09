@@ -46,7 +46,7 @@ const CopyrightDesignsGrid = ({ designs, isOwnProfile = true }) => {
         onClose={() => setSelectedImage(null)}
         image={selectedImage?.image}
         title={selectedImage?.title}
-        showWatermark={true}
+        showWatermark={false}
       />
 
       {/* Apply Copyright Modal */}

@@ -18,9 +18,9 @@ const ProfilePage = () => {
     occupation: 'Traditional Kolam Artist',
     location: 'Chennai, Tamil Nadu',
     image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop',
-    posts: '248',
-    followers: '12.4K',
-    following: '842'
+    posts: '16',
+    followers: '12',
+    following: '8'
   });
 
   const handleEditProfile = () => {
@@ -36,70 +36,95 @@ const ProfilePage = () => {
 
   // Rangoli/Kolam artwork images for Library tab
   const artworks = [
-    { id: 1, img: 'https://images.unsplash.com/photo-1605000797499-95a51c5269ae?w=400&h=400&fit=crop', title: 'Colorful Mandala' },
-    { id: 2, img: 'https://images.unsplash.com/photo-1582201942988-13e60e4556ee?w=400&h=400&fit=crop', title: 'Peacock Rangoli' },
-    { id: 3, img: 'https://images.unsplash.com/photo-1574263867128-a3d5c1b1decc?w=400&h=400&fit=crop', title: 'Floral Pattern' },
-    { id: 4, img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=400&fit=crop', title: 'Traditional Design' },
-    { id: 5, img: 'https://images.unsplash.com/photo-1545048702-79362596cdc9?w=400&h=400&fit=crop', title: 'Lotus Kolam' },
-    { id: 6, img: 'https://images.unsplash.com/photo-1604869515882-4d10fa4b0492?w=400&h=400&fit=crop', title: 'Diya Rangoli' },
-    { id: 7, img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop', title: 'Geometric Pattern' },
-    { id: 8, img: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=400&fit=crop', title: 'Festival Kolam' },
-    { id: 9, img: 'https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=400&h=400&fit=crop', title: 'Pongal Design' },
-    { id: 10, img: 'https://images.unsplash.com/photo-1549490349-8643362247b5?w=400&h=400&fit=crop', title: 'Mandala Art' },
-    { id: 11, img: 'https://images.unsplash.com/photo-1578301978693-85fa9c0320b9?w=400&h=400&fit=crop', title: 'Symmetrical Rangoli' },
-    { id: 12, img: 'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=400&h=400&fit=crop', title: 'Traditional Kolam' }
+    { id: 1, img: '/rangoli-images/Beautiful Lotus Rangoli.jpg', title: 'Beautiful Lotus Rangoli' },
+    { id: 2, img: '/rangoli-images/Picock.jpg', title: 'Peacock Rangoli' },
+    { id: 3, img: '/rangoli-images/Sunflower Rangoli.jpg', title: 'Sunflower Rangoli' },
+    { id: 4, img: '/rangoli-images/Traditional art.jpg', title: 'Traditional Art' },
+    { id: 5, img: '/rangoli-images/Lotus Rangoli.jpg', title: 'Lotus Rangoli' },
+    { id: 6, img: '/rangoli-images/Rangoli.jpg', title: 'Classic Rangoli' },
+    { id: 7, img: '/rangoli-images/Kolam pattern archive + layout instructions.jpg', title: 'Kolam Pattern' },
+    { id: 8, img: '/rangoli-images/MARGAZHI KOLAM- DAY 27.jpg', title: 'Margazhi Kolam' },
+    { id: 9, img: '/rangoli-images/intricate kolam designs 1.jpg', title: 'Intricate Kolam' },
+    { id: 10, img: '/rangoli-images/beautiful.jpg', title: 'Beautiful Design' },
+    { id: 11, img: '/rangoli-images/Om sanakar bharti.jpg', title: 'Om Sankar Bharti' },
+    { id: 12, img: '/rangoli-images/White Rangoli Design Images (Kolam Ideas).jpg', title: 'White Rangoli' },
+    { id: 13, img: '/rangoli-images/download (5).jpg', title: 'Festive Kolam' },
+    { id: 14, img: '/rangoli-images/download (6).jpg', title: 'Traditional Muggu' },
+    { id: 15, img: '/rangoli-images/download (7).jpg', title: 'Floral Pattern' },
+    { id: 16, img: '/rangoli-images/download (8).jpg', title: 'Geometric Design' },
   ];
 
   // Monetization stats
   const stats = {
-    totalEarnings: '24,567',
-    thisMonth: '3,420',
-    designsSold: '187',
+    totalEarnings: '2,847',
+    thisMonth: '549',
+    designsSold: '12',
   };
 
   // Monetized designs data
   const monetizedDesigns = [
     {
       id: 1,
-      title: 'Lotus Kolam Design',
+      title: 'Diwali Aesthetic Rangoli',
       price: '299',
       status: 'Approved',
-      image: 'https://images.unsplash.com/photo-1605000797499-95a51c5269ae?w=400&h=400&fit=crop',
+      image: '/rangoli-images/MyDiwaliAesthetic.jpg',
     },
     {
       id: 2,
-      title: 'Mandala Kolam',
+      title: 'Beautiful Unique Rangoli',
       price: '399',
       status: 'Pending',
-      image: 'https://images.unsplash.com/photo-1582201942988-13e60e4556ee?w=400&h=400&fit=crop',
+      image: '/rangoli-images/download (16).jpg',
     },
     {
       id: 3,
-      title: 'Festival Rangoli',
+      title: 'Rangoli 25 Special',
       price: '549',
       status: 'Approved',
-      image: 'https://images.unsplash.com/photo-1574263867128-a3d5c1b1decc?w=400&h=400&fit=crop',
+      image: "/rangoli-images/download (14).jpg",
     },
     {
       id: 4,
-      title: 'Peacock Kolam',
+      title: 'Peacock Lotus Rangoli',
       price: '449',
       status: 'Rejected',
-      image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=400&fit=crop',
+      image: '/rangoli-images/rangoli 🦚 🪷.jpg',
     },
     {
       id: 5,
-      title: 'Simple Dot Kolam',
+      title: 'Flower Rangoli',
       price: '199',
       status: 'Approved',
-      image: 'https://images.unsplash.com/photo-1545048702-79362596cdc9?w=400&h=400&fit=crop',
+      image: '/rangoli-images/flower 🌺 wale rangoli.jpg',
     },
     {
       id: 6,
-      title: 'Geometric Kolam',
+      title: 'Annapurna Jayanti Design',
       price: '349',
       status: 'Pending',
-      image: 'https://images.unsplash.com/photo-1604869515882-4d10fa4b0492?w=400&h=400&fit=crop',
+      image: '/rangoli-images/Annapurna Jayanti Rangoli Design Images (Kolam Ideas).jpg',
+    },
+    {
+      id: 7,
+      title: 'Aadi Matham Lotus',
+      price: '599',
+      status: 'Approved',
+      image: '/rangoli-images/Aadi matham spl traditional rangoli _ Lotus flower rangoli _ big kolangal @saisparkrangolies.jpg',
+    },
+    {
+      id: 8,
+      title: 'Best Diwali Rangoli',
+      price: '279',
+      status: 'Approved',
+      image: '/rangoli-images/Best 25+ Rangoli For Diwali » Mixing Images.jpg',
+    },
+    {
+      id: 9,
+      title: 'Just Not Rangoli',
+      price: '329',
+      status: 'Pending',
+      image: '/rangoli-images/Justnotrangoli.jpg',
     },
   ];
 
@@ -107,60 +132,84 @@ const ProfilePage = () => {
   const copyrightDesigns = [
     {
       id: 1,
-      title: 'Sacred Lotus Kolam',
+      title: 'Easy Rangoli for Beginners',
       date: 'March 15, 2024',
       copyrightId: 'CK-2024-0315-001',
       status: 'Approved',
-      image: 'https://images.unsplash.com/photo-1605000797499-95a51c5269ae?w=400&h=400&fit=crop',
+      image: '/rangoli-images/15 Easy Rangoli Designs for Beginners.jpg',
     },
     {
       id: 2,
-      title: 'Festival Rangoli',
+      title: 'Simple Dhanurmasam Muggulu',
       date: 'March 12, 2024',
       copyrightId: 'CK-2024-0312-002',
       status: 'Pending',
-      image: 'https://images.unsplash.com/photo-1582201942988-13e60e4556ee?w=400&h=400&fit=crop',
+      image: '/rangoli-images/Simple rangoli designs _ Dhanurmasam Muggulu _ Easy Pongal Padi Kolam _ Easy Rangoli_ Geethala Muggu (1).jpg',
     },
     {
       id: 3,
-      title: 'Heritage Muggu',
+      title: 'Heritage Muggu Design',
       date: 'March 10, 2024',
       copyrightId: 'CK-2024-0310-003',
       status: 'Approved',
-      image: 'https://images.unsplash.com/photo-1574263867128-a3d5c1b1decc?w=400&h=400&fit=crop',
+      image: '/rangoli-images/download (9).jpg',
     },
     {
       id: 4,
-      title: 'Peacock Alpana',
+      title: 'Peacock Rangoli Art',
       date: 'March 8, 2024',
       copyrightId: 'CK-2024-0308-004',
       status: 'Rejected',
-      image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=400&fit=crop',
+      image: '/rangoli-images/download (10).jpg',
     },
     {
       id: 5,
-      title: 'Royal Mandana',
+      title: 'Royal Mandana Pattern',
       date: 'March 5, 2024',
       copyrightId: 'CK-2024-0305-005',
       status: 'Approved',
-      image: 'https://images.unsplash.com/photo-1545048702-79362596cdc9?w=400&h=400&fit=crop',
+      image: '/rangoli-images/download (11).jpg',
     },
     {
       id: 6,
-      title: 'Modern Fusion',
+      title: 'Modern Fusion Kolam',
       date: 'March 3, 2024',
       copyrightId: 'CK-2024-0303-006',
       status: 'Pending',
-      image: 'https://images.unsplash.com/photo-1604869515882-4d10fa4b0492?w=400&h=400&fit=crop',
+      image: '/rangoli-images/download (12).jpg',
+    },
+    {
+      id: 7,
+      title: 'Festival Special Design',
+      date: 'February 28, 2024',
+      copyrightId: 'CK-2024-0228-007',
+      status: 'Approved',
+      image: '/rangoli-images/download (14).jpg',
+    },
+    {
+      id: 8,
+      title: 'Traditional Kolam Art',
+      date: 'February 25, 2024',
+      copyrightId: 'CK-2024-0225-008',
+      status: 'Approved',
+      image: '/rangoli-images/download (15).jpg',
+    },
+    {
+      id: 9,
+      title: 'Geometric Rangoli',
+      date: 'February 20, 2024',
+      copyrightId: 'CK-2024-0220-009',
+      status: 'Pending',
+      image: '/rangoli-images/download (16).jpg',
     },
   ];
 
   // Copyright stats
   const copyrightStats = {
-    totalCopyrighted: '24',
-    approved: '18',
-    pending: '4',
-    rejected: '2',
+    totalCopyrighted: '9',
+    approved: '5',
+    pending: '3',
+    rejected: '1',
   };
 
   const renderTabContent = () => {
