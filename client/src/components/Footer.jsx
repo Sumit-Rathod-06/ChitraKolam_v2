@@ -50,11 +50,11 @@ const Footer = () => {
                 <Heart className="w-6 h-6 text-white" fill="white" />
               </div>
               <span className="text-2xl font-bold text-white tracking-wider">
-                Chitrakolam
+                Chitrakolam 
               </span>
             </div>
             <p className="text-sm text-gray-400 max-w-xs leading-relaxed">
-              Celebrating the timeless art of kolam through modern technology.
+              Voice Assistant : +1(657) 2459118
             </p>
           </div>
 

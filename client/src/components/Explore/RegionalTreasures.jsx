@@ -1,40 +1,37 @@
 import React, { useState } from "react";
 import CircularGallery from "../LandingPage/CircularGallery";
-import rangoli1 from "C:/Users/MAYUR RAONANG/OneDrive/Desktop/Dikshant/ChitraKolam_v2/client/src/assets/Rangoli/Rangoli/rangoli1.jpg";
-import rangoli2 from "C:/Users/MAYUR RAONANG/OneDrive/Desktop/Dikshant/ChitraKolam_v2/client/src/assets/Rangoli/Rangoli/rangoli2.jpg";
-import rangoli3 from "C:/Users/MAYUR RAONANG/OneDrive/Desktop/Dikshant/ChitraKolam_v2/client/src/assets/Rangoli/Rangoli/rangoli3.jpg";
-import rangoli4 from "C:/Users/MAYUR RAONANG/OneDrive/Desktop/Dikshant/ChitraKolam_v2/client/src/assets/Rangoli/Rangoli/rangoli4.jpg";
-import rangoli5 from "C:/Users/MAYUR RAONANG/OneDrive/Desktop/Dikshant/ChitraKolam_v2/client/src/assets/Rangoli/Rangoli/rangoli5.jpg";
-import rangoli6 from "C:/Users/MAYUR RAONANG/OneDrive/Desktop/Dikshant/ChitraKolam_v2/client/src/assets/Rangoli/Rangoli/rangoli6.jpg";
+import rangoli1 from "../../assets/Rangoli/Rangoli/rangoli1.jpg";
+import rangoli2 from "../../assets/Rangoli/Rangoli/rangoli2.jpg";
+import rangoli3 from "../../assets/Rangoli/Rangoli/rangoli3.jpg";
+import rangoli4 from "../../assets/Rangoli/Rangoli/rangoli4.jpg";
+import rangoli5 from "../../assets/Rangoli/Rangoli/rangoli5.jpg";
+import rangoli6 from "../../assets/Rangoli/Rangoli/rangoli6.jpg";
 
-import Kolam1 from "C:/Users/MAYUR RAONANG/OneDrive/Desktop/Dikshant/ChitraKolam_v2/client/src/assets/Kolam/Kolam/Kolam1.jpg";
-import Kolam2 from "C:/Users/MAYUR RAONANG/OneDrive/Desktop/Dikshant/ChitraKolam_v2/client/src/assets/Kolam/Kolam/Kolam2.jpg";
-import Kolam3 from "C:/Users/MAYUR RAONANG/OneDrive/Desktop/Dikshant/ChitraKolam_v2/client/src/assets/Kolam/Kolam/Kolam3.jpg";
-import Kolam4 from "C:/Users/MAYUR RAONANG/OneDrive/Desktop/Dikshant/ChitraKolam_v2/client/src/assets/Kolam/Kolam/Kolam4.jpg";
-import Kolam5 from "C:/Users/MAYUR RAONANG/OneDrive/Desktop/Dikshant/ChitraKolam_v2/client/src/assets/Kolam/Kolam/Kolam5.jpg";
-import Kolam6 from "C:/Users/MAYUR RAONANG/OneDrive/Desktop/Dikshant/ChitraKolam_v2/client/src/assets/Kolam/Kolam/Kolam6.jpg";
-
-import muggu1 from "C:/Users/MAYUR RAONANG/OneDrive/Desktop/Dikshant/ChitraKolam_v2/client/src/assets/Muggu/Muggu/muggu1.jpg";
-import muggu2 from "C:/Users/MAYUR RAONANG/OneDrive/Desktop/Dikshant/ChitraKolam_v2/client/src/assets/Muggu/Muggu/muggu2.jpg";
-import muggu3 from "C:/Users/MAYUR RAONANG/OneDrive/Desktop/Dikshant/ChitraKolam_v2/client/src/assets/Muggu/Muggu/muggu3.jpg";
-import muggu4 from "C:/Users/MAYUR RAONANG/OneDrive/Desktop/Dikshant/ChitraKolam_v2/client/src/assets/Muggu/Muggu/muggu4.jpg";
-import muggu5 from "C:/Users/MAYUR RAONANG/OneDrive/Desktop/Dikshant/ChitraKolam_v2/client/src/assets/Muggu/Muggu/muggu5.jpg";
-import muggu6 from "C:/Users/MAYUR RAONANG/OneDrive/Desktop/Dikshant/ChitraKolam_v2/client/src/assets/Muggu/Muggu/muggu6.jpg";
-import muggu7 from "C:/Users/MAYUR RAONANG/OneDrive/Desktop/Dikshant/ChitraKolam_v2/client/src/assets/Muggu/Muggu/muggu7.jpg";
-
-import mandana1 from "C:/Users/MAYUR RAONANG/OneDrive/Desktop/Dikshant/ChitraKolam_v2/client/src/assets/Mandana/Mandana/Copy of images (1).jpg";
-import mandana2 from "C:/Users/MAYUR RAONANG/OneDrive/Desktop/Dikshant/ChitraKolam_v2/client/src/assets/Mandana/Mandana/Copy of images (2).jpg";
-import mandana3 from "C:/Users/MAYUR RAONANG/OneDrive/Desktop/Dikshant/ChitraKolam_v2/client/src/assets/Mandana/Mandana/Copy of images.jpg";
-import mandana4 from "C:/Users/MAYUR RAONANG/OneDrive/Desktop/Dikshant/ChitraKolam_v2/client/src/assets/Mandana/Mandana/Copy of Lakshmi pada mandana.jpg";
-import mandana5 from "C:/Users/MAYUR RAONANG/OneDrive/Desktop/Dikshant/ChitraKolam_v2/client/src/assets/Mandana/Mandana/Copy of Lakshmi paglya mandana.jpg";
-import mandana6 from "C:/Users/MAYUR RAONANG/OneDrive/Desktop/Dikshant/ChitraKolam_v2/client/src/assets/Mandana/Mandana/Copy of Mandana design (1).jpg";
-
-import alpana1 from "C:/Users/MAYUR RAONANG/OneDrive/Desktop/Dikshant/ChitraKolam_v2/client/src/assets/Alpana/Alpana/Alpana1.jpg";
-import alpana2 from "C:/Users/MAYUR RAONANG/OneDrive/Desktop/Dikshant/ChitraKolam_v2/client/src/assets/Alpana/Alpana/Alpana2.jpg";
-import alpana3 from "C:/Users/MAYUR RAONANG/OneDrive/Desktop/Dikshant/ChitraKolam_v2/client/src/assets/Alpana/Alpana/Alpana3.jpg";
-import alpana4 from "C:/Users/MAYUR RAONANG/OneDrive/Desktop/Dikshant/ChitraKolam_v2/client/src/assets/Alpana/Alpana/Alpana4.jpg";
-import alpana5 from "C:/Users/MAYUR RAONANG/OneDrive/Desktop/Dikshant/ChitraKolam_v2/client/src/assets/Alpana/Alpana/Alpana5.jpg";
-import alpana6 from "C:/Users/MAYUR RAONANG/OneDrive/Desktop/Dikshant/ChitraKolam_v2/client/src/assets/Alpana/Alpana/Alpana6.jpg";
+import Kolam1 from "../../assets/Kolam/Kolam/Kolam1.jpg";
+import Kolam2 from "../../assets/Kolam/Kolam/Kolam2.jpg";
+import Kolam3 from "../../assets/Kolam/Kolam/Kolam3.jpg";
+import Kolam4 from "../../assets/Kolam/Kolam/Kolam4.jpg";
+import Kolam5 from "../../assets/Kolam/Kolam/Kolam5.jpg";
+import Kolam6 from "../../assets/Kolam/Kolam/Kolam6.jpg";
+import muggu1 from "../../assets/Muggu/Muggu/muggu1.jpg";
+import muggu2 from "../../assets/Muggu/Muggu/muggu2.jpg";
+import muggu3 from "../../assets/Muggu/Muggu/muggu3.jpg";
+import muggu4 from "../../assets/Muggu/Muggu/muggu4.jpg";
+import muggu5 from "../../assets/Muggu/Muggu/muggu5.jpg";
+import muggu6 from "../../assets/Muggu/Muggu/muggu6.jpg";
+import muggu7 from "../../assets/Muggu/Muggu/muggu7.jpg";
+import mandana1 from "../../assets/Mandana/Mandana/Copy of images (1).jpg";
+import mandana2 from "../../assets/Mandana/Mandana/Copy of images (2).jpg";
+import mandana3 from "../../assets/Mandana/Mandana/Copy of images.jpg";
+import mandana4 from "../../assets/Mandana/Mandana/Copy of Lakshmi pada mandana.jpg";
+import mandana5 from "../../assets/Mandana/Mandana/Copy of Lakshmi paglya mandana.jpg";
+import mandana6 from "../../assets/Mandana/Mandana/Copy of Mandana design (1).jpg";
+import alpana1 from "../../assets/Alpana/Alpana/Alpana1.jpg";
+import alpana2 from "../../assets/Alpana/Alpana/Alpana2.jpg";
+import alpana3 from "../../assets/Alpana/Alpana/Alpana3.jpg";
+import alpana4 from "../../assets/Alpana/Alpana/Alpana4.jpg";
+import alpana5 from "../../assets/Alpana/Alpana/Alpana5.jpg";
+import alpana6 from "../../assets/Alpana/Alpana/Alpana6.jpg";
 // 1. Define your data source
 // In a real app, this might come from an API.
 // Using placeholder images for demonstration.

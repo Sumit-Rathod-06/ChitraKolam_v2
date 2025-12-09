@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 import pool from "../config/db.js";
 
 // ✅ NGROK URL
-const API_URL = "https://teresia-pretribal-nonphonetically.ngrok-free.dev/generate";
+const API_URL = "https://unhealing-anibal-stocky.ngrok-free.dev/generate";
 
 // POST /api/text_to_image/generate
 export const generate = async (req, res) => {

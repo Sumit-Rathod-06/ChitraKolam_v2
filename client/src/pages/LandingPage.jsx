@@ -7,11 +7,11 @@ import KolamAnalysis from "../components/LandingPage/KolamAnalysis";
 import CreateKolamSection from "../components/LandingPage/CreateKolamSection";
 import CircularGallery from "../components/LandingPage/CircularGallery";
 import MissionSection from "../components/LandingPage/MissionSection";
-
+import NavBar from "../components/NavBar";
 export const LandingPage = () => {
   return (
     <div>
-      {/* <NavBar /> */}
+      <NavBar />
       <HeroSection />
       {/* <div style={{ height: "600px", position: "relative" }}>
         <CircularGallery

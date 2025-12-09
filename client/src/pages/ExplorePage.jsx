@@ -11,7 +11,7 @@ import BentoGrid from "../components/Explore/BentoGrid";
 import CircularGallery from "../components/LandingPage/CircularGallery";
 import KolamStoryUploader from "../components/Explore/KolamStoryUploader";
 import KolamGamesSection from "../components/Tutorial/KolamGamesSection";
-
+import Navbar from "../components/NavBar";
 const ExplorePage = () => {
   return (
     <div>

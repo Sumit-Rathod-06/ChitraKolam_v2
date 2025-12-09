@@ -4,7 +4,7 @@ import path from "path";
 import { v4 as uuidv4 } from "uuid";
 
 // ✅ NGROK URL
-const API_URL = "https://caliphal-ethereous-elisabeth.ngrok-free.dev/generate";
+const API_URL = "https://chromic-sheron-plaguily.ngrok-free.dev/generate";
 
 export const generate = async (req, res) => {
   try {

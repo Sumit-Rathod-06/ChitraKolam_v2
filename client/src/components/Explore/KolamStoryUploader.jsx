@@ -33,7 +33,7 @@ export default function KolamStoryUploader() {
     formData.append("image", selectedFile);
 
     try {
-      const response = await fetch("http://localhost:5000/classify", {
+      const response = await fetch("http://localhost:5005/classify", {
         method: "POST",
         body: formData,
       });
