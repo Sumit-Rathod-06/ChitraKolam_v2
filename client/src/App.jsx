@@ -12,12 +12,14 @@ import RegisterPage from "./pages/RegisterPage";
 import CanvasPage from "./pages/CanvasPage";
 import PrivateRoute from "./components/PrivateRoute";
 import AnalysePage from "./pages/AnalysePage" 
+import ExplorePage from "./pages/ExplorePage";
+import TutuorialPage from "./pages/TutuorialPage";
 
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/">
-        <Route index element={<LandingPage />} />      
+        <Route index element={<TutuorialPage />} />      
 
         {/* Auth Routes */}
         <Route path="login" element={<LoginPage />} />

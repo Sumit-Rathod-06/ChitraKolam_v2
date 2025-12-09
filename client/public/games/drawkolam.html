@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Mirror Drawing Challenge — ChitraKolam</title>
+    <style>
+      :root {
+        --bg: #ffffff;
+        --panel: #f5f5f5;
+        --accent: #b02a30;
+        --teal: #1a7f79;
+        --muted: #666666;
+        --dark: #111111;
+      }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        background: linear-gradient(180deg, #fff, #fff);
+        font-family: Inter, system-ui, Arial, sans-serif;
+        color: var(--dark);
+      }
+      .app {
+        max-width: 1200px;
+        margin: 22px auto;
+        padding: 22px;
+      }
+      .header {
+        display: flex;
+        gap: 18px;
+        align-items: center;
+        margin-bottom: 12px;
+      }
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .brand {
+        font-weight: 700;
+        color: var(--accent);
+        font-size: 20px;
+      }
+      .controls {
+        margin-left: auto;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      .control {
+        background: var(--panel);
+        padding: 8px 10px;
+        border-radius: 10px;
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        box-shadow: 0 6px 14px rgba(0, 0, 0, 0.06);
+      }
+
+      label.small {
+        font-size: 12px;
+        color: var(--muted);
+        display: block;
+        margin-bottom: 4px;
+      }
+      input[type="color"] {
+        width: 36px;
+        height: 28px;
+        border-radius: 6px;
+        border: 1px solid #e6e6e6;
+        padding: 0;
+      }
+      input[type="range"] {
+        width: 140px;
+      }
+      select,
+      button {
+        background: white;
+        border: 1px solid #e9e9e9;
+        padding: 8px 10px;
+        border-radius: 8px;
+        font-size: 14px;
+      }
+      button.primary {
+        background: linear-gradient(180deg, var(--accent), #8a1f28);
+        color: white;
+        border: none;
+        padding: 10px 14px;
+        font-weight: 600;
+        box-shadow: 0 8px 18px rgba(176, 42, 48, 0.14);
+      }
+      button.ghost {
+        background: transparent;
+        border: 1px solid #ddd;
+      }
+      .layout {
+        display: grid;
+        grid-template-columns: 300px 1fr 300px;
+        gap: 20px;
+        align-items: start;
+      }
+      .sidebar {
+        background: var(--panel);
+        padding: 14px;
+        border-radius: 14px;
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.04);
+      }
+      .panel {
+        background: var(--panel);
+        padding: 14px;
+        border-radius: 14px;
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.04);
+      }
+      .canvas-wrap {
+        background: linear-gradient(180deg, #fff, #fbfbfb);
+        padding: 14px;
+        border-radius: 14px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+      }
+      .canvas-frame {
+        background: white;
+        border-radius: 12px;
+        padding: 12px;
+        box-shadow: 0 10px 26px rgba(0, 0, 0, 0.06);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      canvas {
+        border-radius: 8px;
+        background: white;
+        touch-action: none;
+        display: block;
+        max-width: 100%;
+      }
+      .hint {
+        font-size: 13px;
+        color: var(--muted);
+        margin-top: 6px;
+      }
+      .footer {
+        margin-top: 16px;
+        font-size: 13px;
+        color: var(--muted);
+      }
+
+      @media (max-width: 980px) {
+        .layout {
+          grid-template-columns: 1fr;
+          padding-bottom: 30px;
+        }
+        .controls {
+          justify-content: flex-start;
+        }
+        .sidebar {
+          order: 2;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <div class="header">
+        <div class="logo">
+          <div
+            style="
+              width: 44px;
+              height: 44px;
+              border-radius: 10px;
+              background: linear-gradient(180deg, var(--accent), #8a1f28);
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              color: white;
+              font-weight: 700;
+            "
+          >
+            CK
+          </div>
+          <div>
+            <div class="brand">ChitraKolam — Mirror Challenge</div>
+            <div style="font-size: 12px; color: var(--muted)">
+              Draw left → watch the mirrored magic
+            </div>
+          </div>
+        </div>
+
+        <div class="controls">
+          <div class="control">
+            <div style="display: flex; flex-direction: column">
+              <label class="small">Brush Color</label>
+              <input id="color" type="color" value="#2b2b2b" />
+            </div>
+          </div>
+
+          <div class="control">
+            <div style="display: flex; flex-direction: column">
+              <label class="small"
+                >Brush Size <span id="sizeVal">6</span></label
+              >
+              <input id="size" type="range" min="1" max="40" value="6" />
+            </div>
+          </div>
+
+          <div class="control">
+            <div style="display: flex; flex-direction: column">
+              <label class="small">Mode</label>
+              <select id="mode">
+                <option value="mirror">Mirror (Left → Right)</option>
+                <option value="flip">Flip Vertical + Mirror</option>
+                <option value="quad">Quad Symmetry</option>
+                <option value="rotate">Rotate 180°</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="control">
+            <div style="display: flex; flex-direction: column">
+              <label class="small">Level</label>
+              <select id="level">
+                <option value="1">Level 1 (simple mirror)</option>
+                <option value="2">Level 2 (mirror + flip)</option>
+                <option value="3">Level 3 (quad symmetry)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="control" style="align-items: center">
+            <button id="clear" class="ghost">Clear Canvas</button>
+          </div>
+
+          <div class="control" style="align-items: center">
+            <button id="save" class="primary">Save PNG</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="layout">
+        <div class="sidebar panel">
+          <h3 style="margin: 0 0 8px 0">How to play</h3>
+          <p style="margin: 0; color: var(--muted)">
+            Draw only on the <strong>left half</strong> of the canvas. The
+            system will mirror your strokes to the right automatically according
+            to the chosen mode and level. Try levels to increase symmetry
+            complexity.
+          </p>
+          <hr
+            style="margin: 12px 0; border: none; border-top: 1px solid #eee"
+          />
+          <div style="display: flex; gap: 8px; margin-bottom: 8px">
+            <div
+              style="
+                width: 40px;
+                height: 40px;
+                border-radius: 8px;
+                background: var(--teal);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+              "
+            >
+              1
+            </div>
+            <div>
+              <b>Level 1</b>
+              <div style="color: var(--muted)">Simple left→right mirror</div>
+            </div>
+          </div>
+          <div style="display: flex; gap: 8px; margin-bottom: 8px">
+            <div
+              style="
+                width: 40px;
+                height: 40px;
+                border-radius: 8px;
+                background: #e89a2c;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+              "
+            >
+              2
+            </div>
+            <div>
+              <b>Level 2</b>
+              <div style="color: var(--muted)">
+                Mirror + vertical flip for more symmetry
+              </div>
+            </div>
+          </div>
+          <div style="display: flex; gap: 8px">
+            <div
+              style="
+                width: 40px;
+                height: 40px;
+                border-radius: 8px;
+                background: #4b4bb8;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+              "
+            >
+              3
+            </div>
+            <div>
+              <b>Level 3</b>
+              <div style="color: var(--muted)">
+                Quad symmetry / rotational patterns
+              </div>
+            </div>
+          </div>
+
+          <hr
+            style="margin: 12px 0; border: none; border-top: 1px solid #eee"
+          />
+          <div style="font-size: 13px; color: var(--muted)">
+            Tip: try thin brushes for fine kolam lines. On mobile, use one
+            finger to draw. Save your creation and share it with friends!
+          </div>
+        </div>
+
+        <div class="canvas-wrap">
+          <div class="canvas-frame">
+            <div style="display: flex; gap: 12px; align-items: center">
+              <div style="font-weight: 600">Draw Area</div>
+              <div style="font-size: 13px; color: var(--muted)">
+                Draw on the left half — mirrored output appears on the right
+              </div>
+            </div>
+
+            <div id="canvasContainer" style="margin-top: 12px">
+              <canvas id="c" width="960" height="560"></canvas>
+            </div>
+
+            <div class="hint">
+              The vertical divider marks the center. Only strokes started on the
+              left side will mirror.
+            </div>
+          </div>
+
+          <div class="footer">
+            Made for ChitraKolam — Mirror Drawing Challenge
+          </div>
+        </div>
+
+        <div class="panel">
+          <h3 style="margin-top: 0">Session Controls</h3>
+          <div style="margin: 8px 0 12px 0; color: var(--muted)">
+            Use controls above to switch symmetry mode and difficulty.
+          </div>
+
+          <div style="display: flex; gap: 8px; flex-wrap: wrap">
+            <button id="undo" class="ghost">Undo (step)</button>
+            <button id="redo" class="ghost">Redo</button>
+          </div>
+
+          <hr
+            style="margin: 12px 0; border: none; border-top: 1px solid #eee"
+          />
+
+          <div style="margin-top: 8px">
+            <b>Examples</b>
+            <div style="margin-top: 8px; color: var(--muted)">
+              Try: floral mandala, lotus petals, concentric loops. Level up to
+              see surprising symmetric results.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      /*
+ Mirror Drawing Challenge — Single-file HTML + JS
+ - Draw only on left half (x < width/2). Mirrored strokes are drawn automatically.
+ - Supports pointer and touch events.
+ - Modes and Levels included.
+*/
+
+      // DOM
+      const canvas = document.getElementById("c");
+      const ctx = canvas.getContext("2d");
+      const colorInput = document.getElementById("color");
+      const sizeInput = document.getElementById("size");
+      const sizeVal = document.getElementById("sizeVal");
+      const modeSelect = document.getElementById("mode");
+      const levelSelect = document.getElementById("level");
+      const clearBtn = document.getElementById("clear");
+      const saveBtn = document.getElementById("save");
+      const undoBtn = document.getElementById("undo");
+      const redoBtn = document.getElementById("redo");
+
+      let drawing = false;
+      let last = null;
+      let brushColor = colorInput.value;
+      let brushSize = parseInt(sizeInput.value, 10);
+      let mode = modeSelect.value;
+      let level = levelSelect.value;
+
+      // state history for undo/redo
+      const history = [];
+      let historyIndex = -1;
+      function pushHistory() {
+        // limit history size
+        if (historyIndex < history.length - 1) history.splice(historyIndex + 1);
+        history.push(canvas.toDataURL());
+        historyIndex = history.length - 1;
+        if (history.length > 30) {
+          history.shift();
+          historyIndex--;
+        }
+      }
+      function restoreHistory(idx) {
+        if (idx < 0 || idx >= history.length) return;
+        const img = new Image();
+        img.onload = () => {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          ctx.drawImage(img, 0, 0);
+          drawCenterLine();
+        };
+        img.src = history[idx];
+      }
+
+      // size label
+      sizeInput.addEventListener("input", (e) => {
+        brushSize = parseInt(e.target.value, 10);
+        sizeVal.textContent = brushSize;
+      });
+
+      // color
+      colorInput.addEventListener("change", (e) => {
+        brushColor = e.target.value;
+      });
+
+      // mode & level syncing
+      modeSelect.addEventListener("change", (e) => {
+        mode = e.target.value;
+      });
+      levelSelect.addEventListener("change", (e) => {
+        level = e.target.value;
+        // optional: set recommended mode for each level
+        if (level === "1") {
+          modeSelect.value = "mirror";
+          mode = "mirror";
+        } else if (level === "2") {
+          modeSelect.value = "flip";
+          mode = "flip";
+        } else if (level === "3") {
+          modeSelect.value = "quad";
+          mode = "quad";
+        }
+      });
+
+      // devicePixelRatio scaling for crispness
+      function resizeCanvas() {
+        const ratio = window.devicePixelRatio || 1;
+        const styleW = canvas.clientWidth || canvas.width;
+        const styleH = canvas.clientHeight || canvas.height;
+        canvas.width = styleW * ratio;
+        canvas.height = styleH * ratio;
+        canvas.style.width = styleW + "px";
+        canvas.style.height = styleH + "px";
+        ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+        drawCenterLine();
+        if (historyIndex >= 0) restoreHistory(historyIndex);
+      }
+      window.addEventListener("resize", () => {
+        // resize with a small delay to avoid continuous redrawing
+        setTimeout(resizeCanvas, 50);
+      });
+      resizeCanvas();
+
+      // draw center divider & faint shading on right half
+      function drawCenterLine() {
+        const w = canvas.clientWidth;
+        const h = canvas.clientHeight;
+        ctx.save();
+        // clear background first (only when fresh)
+        // draw faint shading on right half
+        ctx.fillStyle = "rgba(240,240,240,0.25)";
+        ctx.fillRect(w / 2, 0, w / 2, h);
+
+        // divider
+        ctx.beginPath();
+        ctx.moveTo(w / 2, 0);
+        ctx.lineTo(w / 2, h);
+        ctx.strokeStyle = "#bbb";
+        ctx.lineWidth = 1;
+        ctx.stroke();
+
+        ctx.restore();
+      }
+      drawCenterLine();
+
+      // helper: get pointer position relative to canvas CSS pixels
+      function getPos(e) {
+        const rect = canvas.getBoundingClientRect();
+        let clientX, clientY;
+        if (e.touches && e.touches.length) {
+          clientX = e.touches[0].clientX;
+          clientY = e.touches[0].clientY;
+        } else {
+          clientX = e.clientX;
+          clientY = e.clientY;
+        }
+        return {
+          x: clientX - rect.left,
+          y: clientY - rect.top,
+        };
+      }
+
+      // symmetry functions
+      function mirrorLR(x, y, w, h) {
+        return { x: w - x, y: y };
+      }
+      function mirrorTB(x, y, w, h) {
+        return { x: x, y: h - y };
+      }
+      function rotate180(x, y, w, h) {
+        return { x: w - x, y: h - y };
+      }
+      function quadPoints(x, y, w, h) {
+        // returns array of symmetric points (excluding original)
+        return [
+          { x: w - x, y: y },
+          { x: x, y: h - y },
+          { x: w - x, y: h - y },
+        ];
+      }
+
+      // draw line helper (caps round)
+      function strokeLine(x1, y1, x2, y2, color, size) {
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.strokeStyle = color;
+        ctx.lineWidth = size;
+        ctx.lineCap = "round";
+        ctx.lineJoin = "round";
+        ctx.stroke();
+      }
+
+      // handle pointer events
+      canvas.addEventListener("pointerdown", (ev) => {
+        canvas.setPointerCapture(ev.pointerId);
+        const p = getPos(ev);
+        // only start drawing if on left half
+        if (p.x < canvas.clientWidth / 2) {
+          drawing = true;
+          last = p;
+          // start history only when beginning a stroke
+          pushHistory();
+        }
+      });
+
+      canvas.addEventListener("pointerup", (ev) => {
+        if (ev.pointerId)
+          try {
+            canvas.releasePointerCapture(ev.pointerId);
+          } catch (e) {}
+        drawing = false;
+        last = null;
+      });
+
+      canvas.addEventListener("pointercancel", () => {
+        drawing = false;
+        last = null;
+      });
+
+      canvas.addEventListener("pointermove", (ev) => {
+        if (!drawing) return;
+        const p = getPos(ev);
+        if (!last) {
+          last = p;
+          return;
+        }
+        // only allow drawing when current x < half as well (prevents drawing over the right)
+        if (p.x >= canvas.clientWidth / 2) {
+          last = p;
+          return;
+        }
+
+        // draw original stroke
+        strokeLine(last.x, last.y, p.x, p.y, brushColor, brushSize);
+
+        // draw according to level & mode
+        const w = canvas.clientWidth;
+        const h = canvas.clientHeight;
+
+        // level-based behavior
+        if (level === "1") {
+          // simple mirror (left->right)
+          const m1 = mirrorLR(last.x, last.y, w, h);
+          const m2 = mirrorLR(p.x, p.y, w, h);
+          strokeLine(m1.x, m1.y, m2.x, m2.y, brushColor, brushSize);
+        } else if (level === "2") {
+          // mirror + vertical flip (two symmetric strokes)
+          // mirror LR
+          const m1 = mirrorLR(last.x, last.y, w, h);
+          const m2 = mirrorLR(p.x, p.y, w, h);
+          strokeLine(m1.x, m1.y, m2.x, m2.y, brushColor, brushSize);
+          // flip vertical (x mirrored and y flipped)
+          const f1 = { x: w - last.x, y: h - last.y };
+          const f2 = { x: w - p.x, y: h - p.y };
+          strokeLine(f1.x, f1.y, f2.x, f2.y, brushColor, brushSize);
+        } else if (level === "3") {
+          // quad symmetry (3 extra strokes)
+          const pts = quadPoints(last.x, last.y, w, h);
+          const pts2 = quadPoints(p.x, p.y, w, h);
+          for (let i = 0; i < pts.length; i++) {
+            strokeLine(
+              pts[i].x,
+              pts[i].y,
+              pts2[i].x,
+              pts2[i].y,
+              brushColor,
+              brushSize
+            );
+          }
+        }
+
+        // additionally allow explicit mode override (user-chosen mode)
+        // If user explicitly selects a different mode than the level mapping, apply it too
+        if (
+          modeSelect.value !==
+          modeSelect.options[modeSelect.selectedIndex].value
+        ) {
+          // this branch won't occur; kept for logic clarity
+        }
+        // apply explicit selected mode as well (if different from automatic)
+        if (modeSelect.value === "mirror" && level !== "1") {
+          const mm1 = mirrorLR(last.x, last.y, w, h);
+          const mm2 = mirrorLR(p.x, p.y, w, h);
+          strokeLine(mm1.x, mm1.y, mm2.x, mm2.y, brushColor, brushSize);
+        } else if (modeSelect.value === "flip" && level !== "2") {
+          const mm1 = { x: w - last.x, y: h - last.y };
+          const mm2 = { x: w - p.x, y: h - p.y };
+          strokeLine(mm1.x, mm1.y, mm2.x, mm2.y, brushColor, brushSize);
+        } else if (modeSelect.value === "quad" && level !== "3") {
+          const extra1 = quadPoints(last.x, last.y, w, h);
+          const extra2 = quadPoints(p.x, p.y, w, h);
+          for (let i = 0; i < extra1.length; i++) {
+            strokeLine(
+              extra1[i].x,
+              extra1[i].y,
+              extra2[i].x,
+              extra2[i].y,
+              brushColor,
+              brushSize
+            );
+          }
+        } else if (modeSelect.value === "rotate") {
+          const r1 = rotate180(last.x, last.y, w, h);
+          const r2 = rotate180(p.x, p.y, w, h);
+          strokeLine(r1.x, r1.y, r2.x, r2.y, brushColor, brushSize);
+        }
+
+        last = p;
+      });
+
+      // clear
+      clearBtn.addEventListener("click", () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawCenterLine();
+        history.length = 0;
+        historyIndex = -1;
+      });
+
+      // save
+      saveBtn.addEventListener("click", () => {
+        const link = document.createElement("a");
+        link.href = canvas.toDataURL("image/png");
+        link.download = "chitrakolam_mirror.png";
+        link.click();
+      });
+
+      // undo/redo
+      undoBtn.addEventListener("click", () => {
+        if (historyIndex > 0) {
+          historyIndex--;
+          restoreHistory(historyIndex);
+        } else if (historyIndex === 0) {
+          // clear to blank
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          drawCenterLine();
+          historyIndex = -1;
+        }
+      });
+      redoBtn.addEventListener("click", () => {
+        if (historyIndex < history.length - 1) {
+          historyIndex++;
+          restoreHistory(historyIndex);
+        }
+      });
+
+      // initial draw center line & push initial history
+      drawCenterLine();
+      pushHistory();
+    </script>
+  </body>
+</html>

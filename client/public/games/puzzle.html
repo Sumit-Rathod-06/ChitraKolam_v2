@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jigsaw Puzzle Game</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: #f5f5f5;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 350px 1fr 350px;
+        gap: 20px;
+      }
+
+      .sidebar {
+        background: white;
+        border-radius: 12px;
+        padding: 25px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .header {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 20px;
+        padding-bottom: 20px;
+        border-bottom: 2px solid #f0f0f0;
+      }
+
+      .logo {
+        background: #dc2626;
+        color: white;
+        width: 50px;
+        height: 50px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 20px;
+      }
+
+      .title {
+        flex: 1;
+      }
+
+      .title h1 {
+        font-size: 20px;
+        color: #1f2937;
+        margin-bottom: 5px;
+      }
+
+      .title p {
+        font-size: 13px;
+        color: #6b7280;
+      }
+
+      .section {
+        margin-bottom: 25px;
+      }
+
+      .section h3 {
+        font-size: 16px;
+        color: #1f2937;
+        margin-bottom: 15px;
+        font-weight: 600;
+      }
+
+      .control-group {
+        margin-bottom: 15px;
+      }
+
+      .control-group label {
+        display: block;
+        font-size: 13px;
+        color: #6b7280;
+        margin-bottom: 8px;
+        font-weight: 500;
+      }
+
+      select,
+      input[type="file"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #d1d5db;
+        border-radius: 6px;
+        font-size: 14px;
+        background: white;
+      }
+
+      .btn {
+        width: 100%;
+        padding: 12px;
+        border: none;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+        margin-bottom: 10px;
+      }
+
+      .btn-primary {
+        background: #dc2626;
+        color: white;
+      }
+
+      .btn-primary:hover {
+        background: #b91c1c;
+      }
+
+      .btn-secondary {
+        background: #f3f4f6;
+        color: #374151;
+      }
+
+      .btn-secondary:hover {
+        background: #e5e7eb;
+      }
+
+      .level-btn {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 15px;
+        margin-bottom: 10px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-align: left;
+        width: 100%;
+        background: #f9fafb;
+      }
+
+      .level-btn:hover {
+        background: #f3f4f6;
+        transform: translateX(5px);
+      }
+
+      .level-number {
+        width: 35px;
+        height: 35px;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 16px;
+        color: white;
+        flex-shrink: 0;
+      }
+
+      .level-1 {
+        background: #14b8a6;
+      }
+      .level-2 {
+        background: #f59e0b;
+      }
+      .level-3 {
+        background: #8b5cf6;
+      }
+
+      .level-info h4 {
+        font-size: 14px;
+        color: #1f2937;
+        margin-bottom: 3px;
+      }
+
+      .level-info p {
+        font-size: 12px;
+        color: #6b7280;
+      }
+
+      .center-area {
+        background: white;
+        border-radius: 12px;
+        padding: 30px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .canvas-container {
+        margin-bottom: 20px;
+      }
+
+      #puzzleCanvas {
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        cursor: pointer;
+        max-width: 100%;
+      }
+
+      .status {
+        text-align: center;
+        font-size: 16px;
+        color: #374151;
+        margin-bottom: 15px;
+        min-height: 24px;
+        font-weight: 500;
+      }
+
+      .upload-area {
+        text-align: center;
+        padding: 60px 40px;
+        border: 3px dashed #d1d5db;
+        border-radius: 12px;
+        width: 100%;
+        max-width: 600px;
+      }
+
+      .upload-area h2 {
+        font-size: 24px;
+        color: #1f2937;
+        margin-bottom: 15px;
+      }
+
+      .upload-area p {
+        color: #6b7280;
+        margin-bottom: 20px;
+        font-size: 14px;
+      }
+
+      .file-input-label {
+        display: inline-block;
+        padding: 12px 24px;
+        background: #dc2626;
+        color: white;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.2s;
+      }
+
+      .file-input-label:hover {
+        background: #b91c1c;
+      }
+
+      input[type="file"] {
+        display: none;
+      }
+
+      .info-box {
+        background: #eff6ff;
+        border-left: 4px solid #3b82f6;
+        padding: 15px;
+        border-radius: 6px;
+        font-size: 13px;
+        color: #1e40af;
+        line-height: 1.6;
+      }
+
+      @media (max-width: 1200px) {
+        .container {
+          grid-template-columns: 1fr;
+        }
+
+        .sidebar {
+          max-width: 600px;
+          margin: 0 auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Left Sidebar -->
+      <div class="sidebar">
+        <div class="header">
+          <div class="logo">JP</div>
+          <div class="title">
+            <h1>Jigsaw Puzzle</h1>
+            <p>Click tiles to swap and solve</p>
+          </div>
+        </div>
+
+        <div class="section">
+          <h3>How to play</h3>
+          <p
+            style="
+              font-size: 13px;
+              color: #6b7280;
+              line-height: 1.6;
+              margin-bottom: 20px;
+            "
+          >
+            Click any tile to select it (highlighted in green), then click
+            another tile to swap them. Arrange all tiles to recreate the
+            original image.
+          </p>
+
+          <button class="level-btn" onclick="setGridSize(2)">
+            <div class="level-number level-1">1</div>
+            <div class="level-info">
+              <h4>Level 1</h4>
+              <p>2×2 Grid - Easy</p>
+            </div>
+          </button>
+
+          <button class="level-btn" onclick="setGridSize(3)">
+            <div class="level-number level-2">2</div>
+            <div class="level-info">
+              <h4>Level 2</h4>
+              <p>3×3 Grid - Medium</p>
+            </div>
+          </button>
+
+          <button class="level-btn" onclick="setGridSize(4)">
+            <div class="level-number level-3">3</div>
+            <div class="level-info">
+              <h4>Level 3</h4>
+              <p>4×4 Grid - Hard</p>
+            </div>
+          </button>
+        </div>
+
+        <div class="info-box">
+          💡 <strong>Tip:</strong> Start with Level 1 to learn the mechanics.
+          Higher levels offer more challenge and complexity.
+        </div>
+      </div>
+
+      <!-- Center Area -->
+      <div class="center-area">
+        <div id="uploadArea" class="upload-area">
+          <h2>🧩 Start Your Puzzle</h2>
+          <p>Upload an image to begin the challenge</p>
+          <label for="imageUpload" class="file-input-label">
+            Choose Image
+          </label>
+          <input type="file" id="imageUpload" accept="image/*" />
+        </div>
+
+        <div id="puzzleArea" style="display: none; width: 100%">
+          <div class="status" id="status">👆 Click a tile to select it</div>
+          <div class="canvas-container">
+            <canvas id="puzzleCanvas"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Sidebar -->
+      <div class="sidebar">
+        <div class="section">
+          <h3>Puzzle Controls</h3>
+
+          <div class="control-group">
+            <label>Grid Size</label>
+            <select id="gridSize" onchange="startPuzzle()">
+              <option value="2">2×2 (Easy)</option>
+              <option value="3" selected>3×3 (Medium)</option>
+              <option value="4">4×4 (Hard)</option>
+              <option value="5">5×5 (Expert)</option>
+              <option value="6">6×6 (Master)</option>
+            </select>
+          </div>
+
+          <button class="btn btn-primary" onclick="startPuzzle()">
+            🎲 Shuffle Puzzle
+          </button>
+          <button class="btn btn-secondary" onclick="showSolution()">
+            ✅ Show Solution
+          </button>
+          <button class="btn btn-secondary" onclick="resetGame()">
+            🔄 New Image
+          </button>
+        </div>
+
+        <div class="section">
+          <h3>Session Controls</h3>
+          <button class="btn btn-secondary" onclick="undoMove()">↶ Undo</button>
+          <button class="btn btn-secondary" onclick="redoMove()">↷ Redo</button>
+        </div>
+
+        <div class="section">
+          <h3>Examples</h3>
+          <p style="font-size: 13px; color: #6b7280; line-height: 1.6">
+            Try with landscape photos, portraits, or abstract art. Level up to
+            see surprising patterns emerge!
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let img = null;
+      let canvas = document.getElementById("puzzleCanvas");
+      let ctx = canvas.getContext("2d");
+      let gridSize = 3;
+      let pieces = [];
+      let board = [];
+      let selected = null;
+      let tileSize = 0;
+      let canvasSize = 600;
+      let moveHistory = [];
+      let redoStack = [];
+
+      document
+        .getElementById("imageUpload")
+        .addEventListener("change", function (e) {
+          const file = e.target.files[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = function (event) {
+              img = new Image();
+              img.onload = function () {
+                document.getElementById("uploadArea").style.display = "none";
+                document.getElementById("puzzleArea").style.display = "block";
+                startPuzzle();
+              };
+              img.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+          }
+        });
+
+      function setGridSize(size) {
+        document.getElementById("gridSize").value = size;
+        if (img) startPuzzle();
+      }
+
+      function startPuzzle() {
+        if (!img) return;
+
+        gridSize = parseInt(document.getElementById("gridSize").value);
+
+        canvas.width = canvasSize;
+        canvas.height = canvasSize;
+        tileSize = canvasSize / gridSize;
+
+        const size = Math.min(img.width, img.height);
+
+        pieces = [];
+        for (let r = 0; r < gridSize; r++) {
+          for (let c = 0; c < gridSize; c++) {
+            pieces.push({
+              sx: c * (size / gridSize),
+              sy: r * (size / gridSize),
+              sw: size / gridSize,
+              sh: size / gridSize,
+            });
+          }
+        }
+
+        board = Array.from({ length: gridSize * gridSize }, (_, i) => i);
+        shuffleArray(board);
+
+        selected = null;
+        moveHistory = [];
+        redoStack = [];
+        updateStatus("👆 Click a tile to select it");
+        drawPuzzle();
+      }
+
+      function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [array[i], array[j]] = [array[j], array[i]];
+        }
+      }
+
+      function drawPuzzle() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        for (let r = 0; r < gridSize; r++) {
+          for (let c = 0; c < gridSize; c++) {
+            const idx = r * gridSize + c;
+            const piece = pieces[board[idx]];
+
+            const x = c * tileSize;
+            const y = r * tileSize;
+
+            ctx.drawImage(
+              img,
+              piece.sx,
+              piece.sy,
+              piece.sw,
+              piece.sh,
+              x,
+              y,
+              tileSize,
+              tileSize
+            );
+
+            ctx.strokeStyle = "#e5e7eb";
+            ctx.lineWidth = 2;
+            ctx.strokeRect(x, y, tileSize, tileSize);
+
+            if (selected === idx) {
+              ctx.strokeStyle = "#10b981";
+              ctx.lineWidth = 6;
+              ctx.strokeRect(x + 3, y + 3, tileSize - 6, tileSize - 6);
+            }
+          }
+        }
+
+        if (board.every((val, idx) => val === idx)) {
+          updateStatus("🎉 PUZZLE SOLVED! Incredible work!", "#10b981");
+        }
+      }
+
+      canvas.addEventListener("click", function (e) {
+        const rect = canvas.getBoundingClientRect();
+        const scaleX = canvas.width / rect.width;
+        const scaleY = canvas.height / rect.height;
+        const x = (e.clientX - rect.left) * scaleX;
+        const y = (e.clientY - rect.top) * scaleY;
+
+        const col = Math.floor(x / tileSize);
+        const row = Math.floor(y / tileSize);
+        const clickedIdx = row * gridSize + col;
+
+        if (selected === null) {
+          selected = clickedIdx;
+          updateStatus(
+            `🟢 Tile ${clickedIdx + 1} selected. Click another to swap.`,
+            "#10b981"
+          );
+        } else if (selected === clickedIdx) {
+          selected = null;
+          updateStatus("👆 Click a tile to select it");
+        } else {
+          moveHistory.push([...board]);
+          redoStack = [];
+          [board[selected], board[clickedIdx]] = [
+            board[clickedIdx],
+            board[selected],
+          ];
+          selected = null;
+          updateStatus("👆 Click a tile to select it");
+        }
+
+        drawPuzzle();
+      });
+
+      function showSolution() {
+        if (!img) return;
+        moveHistory.push([...board]);
+        board = Array.from({ length: gridSize * gridSize }, (_, i) => i);
+        selected = null;
+        updateStatus("✅ Solution displayed", "#3b82f6");
+        drawPuzzle();
+      }
+
+      function resetGame() {
+        document.getElementById("uploadArea").style.display = "block";
+        document.getElementById("puzzleArea").style.display = "none";
+        img = null;
+      }
+
+      function undoMove() {
+        if (moveHistory.length > 0) {
+          redoStack.push([...board]);
+          board = moveHistory.pop();
+          selected = null;
+          drawPuzzle();
+        }
+      }
+
+      function redoMove() {
+        if (redoStack.length > 0) {
+          moveHistory.push([...board]);
+          board = redoStack.pop();
+          selected = null;
+          drawPuzzle();
+        }
+      }
+
+      function updateStatus(message, color = "#374151") {
+        const status = document.getElementById("status");
+        status.textContent = message;
+        status.style.color = color;
+      }
+    </script>
+  </body>
+</html>

@@ -1,6 +1,5 @@
 import React from "react";
 import Footer from "../components/Footer";
-import NavBar from "../components/NavBar";
 import HeroSection from "../components/LandingPage/HeroSection";
 import AboutCard from "../components/LandingPage/AboutCart";
 import TutorialsSection from "../components/LandingPage/TutorialsSection";
@@ -12,16 +11,16 @@ import MissionSection from "../components/LandingPage/MissionSection";
 export const LandingPage = () => {
   return (
     <div>
-      <NavBar />
+      {/* <NavBar /> */}
       <HeroSection />
-      <div style={{ height: "600px", position: "relative" }}>
+      {/* <div style={{ height: "600px", position: "relative" }}>
         <CircularGallery
           bend={3}
           textColor="#ffffff"
           borderRadius={0.05}
           scrollEase={0.02}
         />
-      </div>
+      </div> */}
       <MissionSection/> 
       <TutorialsSection />
       <KolamAnalysis />

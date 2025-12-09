@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>ChitraKolam — Color the Rangoli</title>
+    <style>
+      :root {
+        --bg: #ffffff;
+        --panel: #f5f5f5;
+        --accent: #b02a30; /* primary deep red */
+        --teal: #1a7f79; /* teal accent */
+        --muted: #555555;
+        --dark: #111111;
+        --pink: #ff4fa3;
+        --saffron: #ff8a3d;
+        --turq: #37d0c2;
+        --royal: #2a2e8a;
+      }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        background: var(--bg);
+        font-family: Inter, system-ui, Arial, sans-serif;
+        color: var(--dark);
+      }
+      .app {
+        max-width: 1100px;
+        margin: 28px auto;
+        padding: 20px;
+      }
+
+      header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 18px;
+      }
+      .logo {
+        width: 52px;
+        height: 52px;
+        border-radius: 12px;
+        background: linear-gradient(180deg, var(--accent), #8a1f28);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 800;
+        font-size: 18px;
+        box-shadow: 0 8px 22px rgba(176, 42, 48, 0.14);
+      }
+      h1 {
+        font-size: 20px;
+        margin: 0;
+      }
+      p.lead {
+        margin: 0;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: 320px 1fr;
+        gap: 20px;
+        align-items: start;
+      }
+      .panel {
+        background: var(--panel);
+        padding: 14px;
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
+      }
+      .controls {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .palette {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .swatch {
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        border: 2px solid rgba(0, 0, 0, 0.06);
+        cursor: pointer;
+        box-shadow: 0 6px 14px rgba(0, 0, 0, 0.06);
+        transition: transform 0.14s;
+      }
+      .swatch:hover {
+        transform: translateY(-4px);
+      }
+      .swatch.selected {
+        outline: 3px solid rgba(0, 0, 0, 0.06);
+        transform: scale(1.06);
+      }
+
+      .btn-row {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      button {
+        padding: 8px 12px;
+        border-radius: 10px;
+        border: 1px solid #e7e7e7;
+        background: white;
+        cursor: pointer;
+      }
+      .btn-primary {
+        background: linear-gradient(180deg, var(--accent), #8a1f28);
+        color: white;
+        border: none;
+        font-weight: 600;
+        box-shadow: 0 10px 20px rgba(176, 42, 48, 0.12);
+      }
+      .muted {
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      /* canvas/card area */
+      .stage {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        align-items: center;
+      }
+      .card {
+        background: white;
+        border-radius: 14px;
+        padding: 14px;
+        box-shadow: 0 10px 26px rgba(16, 22, 36, 0.06);
+        width: 100%;
+        max-width: 720px;
+      }
+      .svg-wrap {
+        display: flex;
+        justify-content: center;
+        padding: 6px;
+      }
+      svg {
+        max-width: 100%;
+        height: auto;
+        touch-action: manipulation;
+      }
+
+      .hint {
+        font-size: 13px;
+        color: var(--muted);
+        margin-top: 6px;
+      }
+
+      footer {
+        margin-top: 12px;
+        color: var(--muted);
+        font-size: 13px;
+        text-align: center;
+      }
+
+      @media (max-width: 900px) {
+        .layout {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <header>
+        <div class="logo">CK</div>
+        <div>
+          <h1>ChitraKolam — Color the Rangoli</h1>
+          <p class="lead">
+            Pick a color, tap a region to fill. Preserve tradition by playing &
+            sharing.
+          </p>
+        </div>
+      </header>
+
+      <div class="layout">
+        <!-- left controls -->
+        <aside class="panel controls" aria-label="controls">
+          <div>
+            <strong>Choose Color</strong>
+            <div class="palette" id="palette">
+              <!-- swatches inserted by JS -->
+            </div>
+          </div>
+
+          <div>
+            <strong>Tools</strong>
+            <div class="btn-row" style="margin-top: 8px">
+              <button id="undoBtn">Undo</button>
+              <button id="clearBtn">Clear</button>
+              <button id="saveBtn" class="btn-primary">Save PNG</button>
+            </div>
+          </div>
+
+          <div>
+            <strong>Patterns</strong>
+            <div class="btn-row" style="margin-top: 8px">
+              <button data-pattern="pattern1">Classic Petals</button>
+              <button data-pattern="pattern2">Dot-Rangoli</button>
+              <button data-pattern="pattern3">Mandala</button>
+            </div>
+          </div>
+
+          <div>
+            <strong>Game</strong>
+            <p class="muted" style="margin: 6px 0 0 0">
+              Fill all regions to complete. Try to match traditional palettes!
+            </p>
+          </div>
+        </aside>
+
+        <!-- right stage -->
+        <main class="stage">
+          <div class="card">
+            <div
+              style="
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+              "
+            >
+              <div>
+                <strong>Pattern</strong>
+                <div class="muted" id="patternName">Classic Petals</div>
+              </div>
+              <div class="muted">
+                Regions filled: <span id="filledCount">0</span>/<span
+                  id="totalCount"
+                  >0</span
+                >
+              </div>
+            </div>
+
+            <div class="svg-wrap" id="svgWrap">
+              <!-- SVG inserted by JS -->
+            </div>
+
+            <div class="hint">
+              Tip: Use the traditional palette to make it authentic. Click
+              regions to color them.
+            </div>
+          </div>
+
+          <footer>Made with ❤ for ChitraKolam — preserve & play</footer>
+        </main>
+      </div>
+    </div>
+
+    <script>
+      /* Simple Color-the-Rangoli game (single-file)
+   - SVG patterns with clickable regions (path elements)
+   - Click color (palette) then click region to fill
+   - Undo/clear/save; switch patterns
+   - ChitraKolam color theme
+*/
+
+      // Palette (ChitraKolam inspired)
+      const COLORS = [
+        { id: "white", hex: "#FFFFFF" },
+        { id: "light", hex: "#F5F5F5" },
+        { id: "red", hex: "#B02A30" },
+        { id: "teal", hex: "#1A7F79" },
+        { id: "pink", hex: "#FF4FA3" },
+        { id: "saffron", hex: "#FF8A3D" },
+        { id: "turq", hex: "#37D0C2" },
+        { id: "royal", hex: "#2A2E8A" },
+      ];
+
+      // simple patterns as inline SVGs with region ids
+      const PATTERNS = {
+        pattern1: {
+          name: "Classic Petals",
+          svg: `
+      <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" id="rangoliSvg">
+        <defs>
+          <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+            <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000" flood-opacity="0.08"/>
+          </filter>
+        </defs>
+
+        <rect x="0" y="0" width="100%" height="100%" fill="transparent"/>
+        <!-- center circle -->
+        <g transform="translate(200,200)">
+          <circle r="28" fill="#fff" stroke="#eee" stroke-width="1.5" id="r0"/>
+          <!-- 8 petals -->
+          <g id="petals">
+            <!-- generate 8 petal paths rotated via transform (we'll hardcode a few) -->
+            <path id="r1" d="M60 0 C 90 -30 90 -70 60 -100 C 20 -60 20 -40 60 0 Z" transform="rotate(0)" fill="#fff" stroke="#eee"/>
+            <path id="r2" d="M60 0 C 90 -30 90 -70 60 -100 C 20 -60 20 -40 60 0 Z" transform="rotate(45)" fill="#fff" stroke="#eee"/>
+            <path id="r3" d="M60 0 C 90 -30 90 -70 60 -100 C 20 -60 20 -40 60 0 Z" transform="rotate(90)" fill="#fff" stroke="#eee"/>
+            <path id="r4" d="M60 0 C 90 -30 90 -70 60 -100 C 20 -60 20 -40 60 0 Z" transform="rotate(135)" fill="#fff" stroke="#eee"/>
+            <path id="r5" d="M60 0 C 90 -30 90 -70 60 -100 C 20 -60 20 -40 60 0 Z" transform="rotate(180)" fill="#fff" stroke="#eee"/>
+            <path id="r6" d="M60 0 C 90 -30 90 -70 60 -100 C 20 -60 20 -40 60 0 Z" transform="rotate(225)" fill="#fff" stroke="#eee"/>
+            <path id="r7" d="M60 0 C 90 -30 90 -70 60 -100 C 20 -60 20 -40 60 0 Z" transform="rotate(270)" fill="#fff" stroke="#eee"/>
+            <path id="r8" d="M60 0 C 90 -30 90 -70 60 -100 C 20 -60 20 -40 60 0 Z" transform="rotate(315)" fill="#fff" stroke="#eee"/>
+          </g>
+          <!-- outer ring petals -->
+          <g id="ring" transform="scale(1.6)">
+            <path id="r9" d="M60 0 C 95 -20 120 -80 80 -130 C 30 -120 20 -80 60 0 Z" transform="rotate(0)" fill="#fff" stroke="#eee"/>
+            <path id="r10" d="M60 0 C 95 -20 120 -80 80 -130 C 30 -120 20 -80 60 0 Z" transform="rotate(60)" fill="#fff" stroke="#eee"/>
+            <path id="r11" d="M60 0 C 95 -20 120 -80 80 -130 C 30 -120 20 -80 60 0 Z" transform="rotate(120)" fill="#fff" stroke="#eee"/>
+          </g>
+        </g>
+      </svg>`,
+        },
+
+        pattern2: {
+          name: "Dot-Rangoli",
+          svg: `
+      <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" id="rangoliSvg">
+        <rect x="0" y="0" width="100%" height="100%" fill="transparent"/>
+        <!-- dotted grid style -->
+        <g transform="translate(200,200)">
+          <circle id="d1" cx="-80" cy="-80" r="18" fill="#fff" stroke="#eee"/>
+          <circle id="d2" cx="0" cy="-80" r="18" fill="#fff" stroke="#eee"/>
+          <circle id="d3" cx="80" cy="-80" r="18" fill="#fff" stroke="#eee"/>
+          <circle id="d4" cx="-80" cy="0" r="18" fill="#fff" stroke="#eee"/>
+          <circle id="d5" cx="0" cy="0" r="18" fill="#fff" stroke="#eee"/>
+          <circle id="d6" cx="80" cy="0" r="18" fill="#fff" stroke="#eee"/>
+          <circle id="d7" cx="-80" cy="80" r="18" fill="#fff" stroke="#eee"/>
+          <circle id="d8" cx="0" cy="80" r="18" fill="#fff" stroke="#eee"/>
+          <circle id="d9" cx="80" cy="80" r="18" fill="#fff" stroke="#eee"/>
+        </g>
+      </svg>`,
+        },
+
+        pattern3: {
+          name: "Simple Mandala",
+          svg: `
+      <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" id="rangoliSvg">
+        <rect x="0" y="0" width="100%" height="100%" fill="transparent"/>
+        <g transform="translate(200,200)">
+          <circle id="c1" r="24" fill="#fff" stroke="#eee"/>
+          <circle id="c2" r="60" fill="transparent" stroke="#eee"/>
+          <g id="arcs">
+            <path id="a1" d="M60 0 A 60 60 0 0 1 0 -60 L 0 0 Z" fill="#fff" stroke="#eee"/>
+            <path id="a2" d="M0 60 A 60 60 0 0 1 -60 0 L 0 0 Z" fill="#fff" stroke="#eee" transform="rotate(45)"/>
+            <path id="a3" d="M0 -60 A 60 60 0 0 1 60 0 L 0 0 Z" fill="#fff" stroke="#eee" transform="rotate(90)"/>
+            <path id="a4" d="M-60 0 A 60 60 0 0 1 0 60 L 0 0 Z" fill="#fff" stroke="#eee" transform="rotate(135)"/>
+          </g>
+        </g>
+      </svg>`,
+        },
+      };
+
+      // state
+      let currentColor = COLORS[2].hex; // default deep red
+      let currentPattern = "pattern1";
+      let fillHistory = []; // {id, prevColor}
+      let regionElements = []; // live NodeList of regions
+
+      // helpers: insert palette
+      const paletteEl = document.getElementById("palette");
+      COLORS.forEach((c) => {
+        const div = document.createElement("div");
+        div.className = "swatch";
+        div.style.background = c.hex;
+        div.title = c.id + " " + c.hex;
+        div.dataset.color = c.hex;
+        if (c.hex === currentColor) div.classList.add("selected");
+        div.addEventListener("click", () => {
+          document
+            .querySelectorAll(".swatch")
+            .forEach((s) => s.classList.remove("selected"));
+          div.classList.add("selected");
+          currentColor = c.hex;
+        });
+        paletteEl.appendChild(div);
+      });
+
+      // render pattern
+      const svgWrap = document.getElementById("svgWrap");
+      function renderPattern(key) {
+        currentPattern = key;
+        const p = PATTERNS[key];
+        document.getElementById("patternName").textContent = p.name;
+        svgWrap.innerHTML = p.svg;
+        bindRegions();
+        updateCounts();
+        fillHistory = [];
+      }
+
+      // bind click handlers on regions in SVG
+      function bindRegions() {
+        const svg = document.getElementById("rangoliSvg");
+        if (!svg) return;
+        // select any element with id that starts with r/d/c/a (our regions)
+        const regions = svg.querySelectorAll("[id]");
+        regionElements = Array.from(regions);
+        regionElements.forEach((el) => {
+          el.style.cursor = "pointer";
+          // init data-color attribute
+          if (!el.dataset.fill) el.dataset.fill = "";
+          el.addEventListener("click", (ev) => {
+            ev.stopPropagation();
+            const prev = el.dataset.fill || "";
+            // apply color
+            el.style.transition = "fill .18s ease";
+            el.style.fill = currentColor;
+            el.dataset.fill = currentColor;
+            // push history
+            fillHistory.push({ id: el.id, prevColor: prev });
+            updateCounts();
+            checkComplete();
+          });
+          // enable touch as click
+        });
+        // responsive scaling: center the group
+        svg.setAttribute("width", "640");
+        svg.setAttribute("height", "640");
+      }
+
+      // update counters
+      function updateCounts() {
+        const total = regionElements.length;
+        const filled = regionElements.filter(
+          (el) => el.dataset.fill && el.dataset.fill !== ""
+        ).length;
+        document.getElementById("totalCount").textContent = total;
+        document.getElementById("filledCount").textContent = filled;
+      }
+
+      // undo / clear / save
+      document.getElementById("undoBtn").addEventListener("click", () => {
+        const last = fillHistory.pop();
+        if (!last) return;
+        const el = document.getElementById(last.id);
+        if (el) {
+          el.style.fill = last.prevColor || "white";
+          el.dataset.fill = last.prevColor || "";
+          updateCounts();
+        }
+      });
+
+      document.getElementById("clearBtn").addEventListener("click", () => {
+        fillHistory = [];
+        regionElements.forEach((el) => {
+          el.style.fill = "#ffffff";
+          el.dataset.fill = "";
+        });
+        updateCounts();
+      });
+
+      document.getElementById("saveBtn").addEventListener("click", () => {
+        // rasterize the current SVG into a PNG via canvas
+        const svg = document.getElementById("rangoliSvg");
+        if (!svg) return;
+        const serializer = new XMLSerializer();
+        const svgStr = serializer.serializeToString(svg);
+        const svgBlob = new Blob([svgStr], {
+          type: "image/svg+xml;charset=utf-8",
+        });
+        const url = URL.createObjectURL(svgBlob);
+        const img = new Image();
+        img.onload = () => {
+          const c = document.createElement("canvas");
+          c.width = img.width;
+          c.height = img.height;
+          const cx = c.getContext("2d");
+          // fill background white
+          cx.fillStyle = "#fff";
+          cx.fillRect(0, 0, c.width, c.height);
+          cx.drawImage(img, 0, 0);
+          URL.revokeObjectURL(url);
+          // download
+          const a = document.createElement("a");
+          a.href = c.toDataURL("image/png");
+          a.download = "chitrakolam_rangoli.png";
+          a.click();
+        };
+        img.src = url;
+      });
+
+      // switch patterns
+      document.querySelectorAll("[data-pattern]").forEach((btn) => {
+        btn.addEventListener("click", () => renderPattern(btn.dataset.pattern));
+      });
+
+      // initial render
+      renderPattern("pattern1");
+
+      // simple completion check
+      function checkComplete() {
+        const total = regionElements.length;
+        const filled = regionElements.filter(
+          (el) => el.dataset.fill && el.dataset.fill !== ""
+        ).length;
+        if (total > 0 && filled === total) {
+          // celebration: small animation & message
+          confetti();
+          setTimeout(
+            () =>
+              alert(
+                "Nice! You completed the rangoli 🌼\nShare or save your artwork."
+              ),
+            120
+          );
+        }
+      }
+
+      // tiny confetti (simple)
+      function confetti() {
+        const n = 24;
+        for (let i = 0; i < n; i++) {
+          const el = document.createElement("div");
+          el.style.position = "fixed";
+          el.style.left = 50 + (Math.random() - 0.5) * 30 + "%";
+          el.style.top = 30 + Math.random() * 40 + "%";
+          el.style.width = "8px";
+          el.style.height = "8px";
+          el.style.borderRadius = "2px";
+          const cols = [
+            "var(--accent)",
+            "var(--teal)",
+            "var(--pink)",
+            "var(--saffron)",
+            "var(--turq)",
+            "var(--royal)",
+          ];
+          el.style.background = cols[Math.floor(Math.random() * cols.length)];
+          el.style.opacity = "0.95";
+          el.style.transform = `translateY(-20px)`;
+          el.style.transition =
+            "transform 900ms cubic-bezier(.2,.8,.2,1), opacity 900ms";
+          document.body.appendChild(el);
+          setTimeout(
+            () =>
+              (el.style.transform = `translateY(${
+                200 + Math.random() * 120
+              }px) rotate(${Math.random() * 360}deg)`),
+            10
+          );
+          setTimeout(() => (el.style.opacity = "0"), 900);
+          setTimeout(() => document.body.removeChild(el), 1400);
+        }
+      }
+
+      // initialize default fills to white for clarity
+      setTimeout(() => {
+        regionElements.forEach((el) => {
+          if (!el.dataset.fill) {
+            el.style.fill = "#ffffff";
+            el.dataset.fill = "";
+          }
+        });
+        updateCounts();
+      }, 40);
+    </script>
+  </body>
+</html>
