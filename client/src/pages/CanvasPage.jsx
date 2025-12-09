@@ -35,7 +35,7 @@ const CanvasPage = () => {
   const [selectedGridPattern, setSelectedGridPattern] = useState("dot");
   const [currentColor, setCurrentColor] = useState("#DC2626");
   const [ctx, setCtx] = useState(null);
-
+  const [generatedImage, setGeneratedImage] = useState(null);
   const canvasRef = useRef(null);
   const isDrawing = useRef(false);
 
@@ -138,35 +138,65 @@ const handleImageUpload = (e) => {
   const imageURL = URL.createObjectURL(file);
   setUploadedImage(imageURL);
 };
-  const getCanvasImage = () => {
+  const getCanvasScreenshotWithWhiteBg = () => {
     const canvas = canvasRef.current;
     if (!canvas) return null;
 
-    // Convert canvas to Base64 PNG
-    return canvas.toDataURL("image/png");
+    // Create offscreen canvas
+    const offCanvas = document.createElement("canvas");
+    offCanvas.width = CANVAS_WIDTH;
+    offCanvas.height = CANVAS_HEIGHT;
+
+    const offCtx = offCanvas.getContext("2d");
+
+    // White background
+    offCtx.fillStyle = "#FFFFFF";
+    offCtx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+
+    // Draw actual canvas on top
+    offCtx.drawImage(canvas, 0, 0);
+
+    return offCanvas.toDataURL("image/png");
   };
 
   const sendToBackend = async () => {
-    const imageData = getCanvasImage();
-    console.log("Sending image data to backend:", imageData);
+    const imageData = getCanvasScreenshotWithWhiteBg();
     if (!imageData) return;
 
     try {
-      const response = await fetch("http://localhost:5000/process-image", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ image: imageData }),
-      });
+      const token = localStorage.getItem("token");
+
+      // ✅ Convert base64 → Blob
+      const blob = await fetch(imageData).then(res => res.blob());
+
+      // ✅ Send as FormData (same as uploaded image)
+      const formData = new FormData();
+      formData.append("image", blob, "canvas.png");
+      formData.append("source", "canvas"); // optional metadata
+
+      const response = await fetch(
+        "http://localhost:5000/api/canvas/upload-image",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`, // ✅ required
+          },
+          body: formData, // ✅ IMPORTANT
+        }
+      );
 
       const data = await response.json();
-      console.log("Backend response:", data);
+      console.log("Canvas AI response:", data);
+
+      if (data.imageUrl) {
+        setGeneratedImage(data.imageUrl);
+      }
 
     } catch (err) {
-      console.error("Error sending image:", err);
+      console.error("Canvas AI error:", err);
     }
   };
+
 
 
 
@@ -214,6 +244,35 @@ const handleImageUpload = (e) => {
   useEffect(() => {
     drawGrid();
   }, [ctx, gridEnabled, gridSize, selectedGridPattern, drawGrid]);
+  const sendUploadedImageToBackend = async () => {
+    if (!uploadedImage) return;
+
+    const blob = await fetch(uploadedImage).then(res => res.blob());
+
+    const formData = new FormData();
+    formData.append("image", blob, "upload.png");
+    console.log(formData)
+    try {
+      const token = localStorage.getItem("token"); 
+      const res = await fetch("http://localhost:5000/api/canvas/upload-image", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,   // ✅ required for protect middleware
+        },
+        body: formData, // must be FormData WITHOUT manual content-type
+      });
+
+      const data = await res.json();
+      console.log("AI Image URL:", data);
+
+      setGeneratedImage(data.imageUrl);
+      // You can show result image on right panel
+      // setGeneratedImage(data.outputImage);
+
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   // ------------------------------
   // JSX Render
@@ -474,6 +533,7 @@ const handleImageUpload = (e) => {
         <div className="w-80 bg-white border-l border-gray-200 p-4 flex flex-col">
 
           {/* Uploaded Image Preview (auto height) */}
+          {/* Uploaded Image */}
           <div className="border rounded-lg overflow-hidden bg-gray-50 mb-4">
             {uploadedImage ? (
               <img
@@ -483,17 +543,41 @@ const handleImageUpload = (e) => {
               />
             ) : (
               <div className="w-full py-10 flex items-center justify-center text-gray-400 text-sm">
-                No Image Uploaded
+                No Uploaded Image
               </div>
             )}
           </div>
 
+          {/* Generated Image */}
+          <div className="border rounded-lg overflow-hidden bg-gray-50 mb-4 mt-4">
+            {generatedImage ? (
+              <img
+                src={generatedImage}
+                alt="Generated Kolam"
+                className="w-full h-auto object-contain"
+              />
+            ) : (
+              <div className="w-full py-10 flex items-center justify-center text-gray-400 text-sm">
+                No Image Generated
+              </div>
+            )}
+          </div>
+          {/* 👇 SHOW ONLY IF IMAGE IS UPLOADED */}
+          {uploadedImage && (
+            <button
+              onClick={sendUploadedImageToBackend}
+              className="w-full mt-2 bg-red-600 text-white py-2 rounded-lg hover:bg-red-700"
+            >
+              Enhance Image (AI)
+            </button>
+          )}
+
           {/* Future Output Panel (fills remaining space) */}
-          <div className="border rounded-lg overflow-hidden bg-gray-50 mb-4">
+          {/* <div className="border rounded-lg overflow-hidden bg-gray-50 mb-4 mt-4">
             <div className="w-full py-10 flex items-center justify-center text-gray-400 text-sm">
                 No Image Generated
             </div>
-          </div>
+          </div> */}
 
         </div>
 

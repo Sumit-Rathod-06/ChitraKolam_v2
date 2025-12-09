@@ -11,7 +11,8 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import CanvasPage from "./pages/CanvasPage";
 import PrivateRoute from "./components/PrivateRoute";
-import AnalysePage from "./pages/AnalysePage" 
+import AnalysePage from "./pages/AnalysePage";
+import {GenerateKolamPage} from "./pages/GenerateKolamPage";
 
 function App() {
   const router = createBrowserRouter(
@@ -24,6 +25,7 @@ function App() {
         <Route path="register" element={<RegisterPage />} />
         <Route path="canvas" element={<PrivateRoute><CanvasPage /></PrivateRoute>} />
         <Route path="analyse" element={<PrivateRoute><AnalysePage /></PrivateRoute>} />
+        <Route path="generate-kolam" element={<PrivateRoute><GenerateKolamPage /></PrivateRoute>} />
       </Route>
     )
   );
